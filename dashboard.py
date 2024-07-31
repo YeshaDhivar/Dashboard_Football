@@ -19,10 +19,10 @@ def load_data(file, skip_first_row=False):
     return df
 
 # Sidebar for page selection
-page = st.sidebar.selectbox("Choose a page", ["Possession Analysis", "League Table Analysis"])
+page = st.sidebar.selectbox("Choose a page", ["Pocession Analysis", "League Table Analysis"])
 
 if page == "Possession Analysis":
-    st.title("Chelsea Soccer Possession Analysis Dashboard")
+    st.title("Chelsea Soccer Pocession Analysis Dashboard")
 
     # File uploaders
     uploaded_possession_file = st.file_uploader("Upload Pocession.xlsx file", type="xlsx")
