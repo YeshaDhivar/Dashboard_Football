@@ -21,7 +21,7 @@ def load_data(file, skip_first_row=False):
 # Sidebar for page selection
 page = st.sidebar.selectbox("Choose a page", ["Pocession Analysis", "League Table Analysis"])
 
-if page == "Possession Analysis":
+if page == "Pocession Analysis":
     st.title("Chelsea Soccer Pocession Analysis Dashboard")
 
     # File uploaders
