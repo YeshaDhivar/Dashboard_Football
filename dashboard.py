@@ -19,7 +19,7 @@ def load_data(file, skip_first_row=False):
     return df
 
 # Sidebar for page selection
-page = st.sidebar.selectbox("Choose a page", ["Possession Analysis", "League Table Analysis", "Other Data Analysis"])
+page = st.sidebar.selectbox("Choose a page", ["Possession Analysis", "League Table Analysis"])
 
 if page == "Possession Analysis":
     st.title("Chelsea Soccer Possession Analysis Dashboard")
