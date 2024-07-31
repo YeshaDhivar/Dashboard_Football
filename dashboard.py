@@ -25,30 +25,30 @@ if page == "Pocession Analysis":
     st.title("Chelsea Soccer Pocession Analysis Dashboard")
 
     # File uploaders
-    uploaded_possession_file = st.file_uploader("Upload Pocession.xlsx file", type="xlsx")
+    uploaded_pocession_file = st.file_uploader("Upload Pocession.xlsx file", type="xlsx")
     uploaded_player_file = st.file_uploader("Upload Player basic data.xlsx file", type="xlsx")
 
-    if uploaded_possession_file is not None and uploaded_player_file is not None:
-        possession_df = load_data(uploaded_possession_file, skip_first_row=True)
+    if uploaded_pocession_file is not None and uploaded_player_file is not None:
+        pocession_df = load_data(uploaded_pocession_file, skip_first_row=True)
         player_df = load_data(uploaded_player_file, skip_first_row=True)
 
         # Filter Chelsea players
         chelsea_players = player_df[player_df['Squad'] == 'Chelsea']['Player'].tolist()
-        chelsea_possession_df = possession_df[possession_df['Player'].isin(chelsea_players)]
+        chelsea_pocession_df = pocession_df[pocession_df['Player'].isin(chelsea_players)]
 
         # Analysis type selection
         analysis_type = st.sidebar.selectbox(
             "Choose analysis type",
-            ["Overview", "Third Analysis", "Correlation Analysis", "Top Performers", "Possession Flow"]
+            ["Overview", "Third Analysis", "Correlation Analysis", "Top Performers", "Pocession Flow"]
         )
 
         if analysis_type == "Overview":
             st.header("Chelsea Data Overview")
-            st.write(chelsea_possession_df.head())
+            st.write(chelsea_pocession_df.head())
             
             st.subheader("Dataset Information")
-            st.write(f"Total number of Chelsea players: {len(chelsea_possession_df)}")
-            st.write(f"Number of features: {chelsea_possession_df.shape[1]}")
+            st.write(f"Total number of Chelsea players: {len(chelsea_pocession_df)}")
+            st.write(f"Number of features: {chelsea_pocession_df.shape[1]}")
 
         elif analysis_type == "Third Analysis":
             st.header("Analysis by Thirds for Chelsea Players")
@@ -57,9 +57,9 @@ if page == "Pocession Analysis":
             
             with col1:
                 st.subheader("Defensive Third")
-                st.write(chelsea_possession_df['Def 3rd'].describe())
+                st.write(chelsea_pocession_df['Def 3rd'].describe())
                 fig, ax = plt.subplots()
-                chelsea_possession_df['Def 3rd'].hist(bins=20, ax=ax)
+                chelsea_pocession_df['Def 3rd'].hist(bins=20, ax=ax)
                 ax.set_title('Distribution of Defensive Third Touches (Chelsea)')
                 ax.set_xlabel('Def 3rd Touches')
                 ax.set_ylabel('Frequency')
@@ -67,9 +67,9 @@ if page == "Pocession Analysis":
             
             with col2:
                 st.subheader("Middle Third")
-                st.write(chelsea_possession_df['Mid 3rd'].describe())
+                st.write(chelsea_pocession_df['Mid 3rd'].describe())
                 fig, ax = plt.subplots()
-                chelsea_possession_df['Mid 3rd'].hist(bins=20, ax=ax)
+                chelsea_pocession_df['Mid 3rd'].hist(bins=20, ax=ax)
                 ax.set_title('Distribution of Middle Third Touches (Chelsea)')
                 ax.set_xlabel('Mid 3rd Touches')
                 ax.set_ylabel('Frequency')
@@ -77,9 +77,9 @@ if page == "Pocession Analysis":
             
             with col3:
                 st.subheader("Attacking Third")
-                st.write(chelsea_possession_df['Att 3rd'].describe())
+                st.write(chelsea_pocession_df['Att 3rd'].describe())
                 fig, ax = plt.subplots()
-                chelsea_possession_df['Att 3rd'].hist(bins=20, ax=ax)
+                chelsea_pocession_df['Att 3rd'].hist(bins=20, ax=ax)
                 ax.set_title('Distribution of Attacking Third Touches (Chelsea)')
                 ax.set_xlabel('Att 3rd Touches')
                 ax.set_ylabel('Frequency')
@@ -89,14 +89,14 @@ if page == "Pocession Analysis":
             st.header("Correlation Analysis for Chelsea Players")
             
             correlation_cols = ['Touches', 'Def 3rd', 'Mid 3rd', 'Att 3rd', 'Att', 'Live', 'Succ', 'Att', 'Succ', 'Mis', 'Dis', 'Rec', 'PrgR']
-            correlation_matrix = chelsea_possession_df[correlation_cols].corr()
+            correlation_matrix = chelsea_pocession_df[correlation_cols].corr()
             
             fig, ax = plt.subplots(figsize=(12, 10))
             sns.heatmap(correlation_matrix, annot=True, cmap='coolwarm', ax=ax)
-            ax.set_title('Correlation Matrix of Possession Metrics (Chelsea)')
+            ax.set_title('Correlation Matrix of Pocession Metrics (Chelsea)')
             st.pyplot(fig)
             
-            st.write("This heatmap shows the correlations between various possession metrics for Chelsea players. Stronger correlations (closer to 1 or -1) are shown in darker colors.")
+            st.write("This heatmap shows the correlations between various pocession metrics for Chelsea players. Stronger correlations (closer to 1 or -1) are shown in darker colors.")
 
         elif analysis_type == "Top Performers":
             st.header("Top Chelsea Performers")
@@ -104,7 +104,7 @@ if page == "Pocession Analysis":
             metric = st.selectbox("Choose a metric", ['Touches', 'Def 3rd', 'Mid 3rd', 'Att 3rd', 'Carries', 'PrgC'])
             top_n = st.slider("Number of top performers", 5, 20, 10)
             
-            top_players = chelsea_possession_df.nlargest(top_n, metric)
+            top_players = chelsea_pocession_df.nlargest(top_n, metric)
             
             fig, ax = plt.subplots(figsize=(12, 6))
             sns.barplot(x='Player', y=metric, data=top_players, ax=ax)
@@ -116,23 +116,23 @@ if page == "Pocession Analysis":
             
             st.write(top_players[['Player', metric]])
 
-        elif analysis_type == "Possession Flow":
-            st.header("Possession Flow Analysis for Chelsea Players")
+        elif analysis_type == "Pocession Flow":
+            st.header("Pocession Flow Analysis for Chelsea Players")
             
             fig, ax = plt.subplots(figsize=(10, 6))
-            sns.scatterplot(data=chelsea_possession_df, x='Touches', y='Carries', size='PrgC', hue='Att 3rd', ax=ax)
-            ax.set_title('Possession Flow: Touches vs Carries (Chelsea)')
+            sns.scatterplot(data=chelsea_pocession_df, x='Touches', y='Carries', size='PrgC', hue='Att 3rd', ax=ax)
+            ax.set_title('Pocession Flow: Touches vs Carries (Chelsea)')
             ax.set_xlabel('Total Touches')
             ax.set_ylabel('Total Carries')
             st.pyplot(fig)
             
             st.write("This scatter plot visualizes the relationship between total touches and carries for Chelsea players. The size of each point represents the number of progressive carries (PrgC), while the color indicates the number of touches in the attacking third.")
             
-            st.subheader("Chelsea Player Possession Profile")
-            selected_player = st.selectbox("Select a Chelsea player", chelsea_possession_df['Player'].tolist())
-            player_data = chelsea_possession_df[chelsea_possession_df['Player'] == selected_player].iloc[0]
+            st.subheader("Chelsea Player Pocession Profile")
+            selected_player = st.selectbox("Select a Chelsea player", chelsea_pocession_df['Player'].tolist())
+            player_data = chelsea_pocession_df[chelsea_pocession_df['Player'] == selected_player].iloc[0]
             
-            # Radar chart for player possession profile
+            # Radar chart for player pocession profile
             metrics = ['Def 3rd', 'Mid 3rd', 'Att 3rd', 'Carries', 'PrgC', 'PrgR']
             values = player_data[metrics].values
             values = np.concatenate((values, [values[0]]))  # close the loop
@@ -144,10 +144,10 @@ if page == "Pocession Analysis":
             ax.plot(angles, values, color='red', linewidth=2)  # plot outline
             ax.set_xticks(angles[:-1])
             ax.set_xticklabels(metrics)
-            ax.set_title(f"Possession Profile: {selected_player}")
+            ax.set_title(f"Pocession Profile: {selected_player}")
             st.pyplot(fig)
             
-            st.write(f"This radar chart shows the possession profile of {selected_player}, highlighting their involvement in different thirds of the pitch and their progression with the ball.")
+            st.write(f"This radar chart shows the pocession profile of {selected_player}, highlighting their involvement in different thirds of the pitch and their progression with the ball.")
 
     else:
         st.write("Please upload both the Pocession.xlsx and Player basic data.xlsx files to begin the analysis.")
@@ -227,4 +227,3 @@ elif page == "League Table Analysis":
 
     else:
         st.write("Please upload the League table.xlsx file to begin the analysis.")
-
