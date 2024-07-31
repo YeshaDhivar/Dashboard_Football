@@ -228,29 +228,3 @@ elif page == "League Table Analysis":
     else:
         st.write("Please upload the League table.xlsx file to begin the analysis.")
 
-elif page == "Other Data Analysis":
-    st.title("Other Soccer Data Analysis")
-    st.write("This page is currently empty and ready for future analysis of another Excel file.")
-    
-    # Placeholder for future file upload
-    uploaded_file = st.file_uploader("Upload your Excel file", type="xlsx")
-    
-    if uploaded_file is not None:
-        df = load_data(uploaded_file)  # Do not skip first row for other files by default
-        st.write("File uploaded successfully. Add your analysis here.")
-        
-        # Display basic information about the uploaded file
-        st.subheader("Data Overview")
-        st.write(df.head())
-        st.write(f"Number of rows: {df.shape[0]}")
-        st.write(f"Number of columns: {df.shape[1]}")
-        
-        # List of columns
-        st.subheader("Columns in the dataset")
-        st.write(df.columns.tolist())
-        
-        # You can add more placeholders for future analysis here
-        st.subheader("Future Analysis")
-        st.write("This section is ready for you to add specific analyses for this dataset.")
-    else:
-        st.write("Please upload an Excel file to begin the analysis.")
